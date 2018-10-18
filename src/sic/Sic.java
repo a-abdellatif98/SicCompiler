@@ -15,7 +15,7 @@ public class Sic {
         LinkedList<String> Var = new LinkedList<>();
         LinkedList Adress = new LinkedList<>();
 
-        File file = new File("C:\\Users\\Lenovo-win10\\Desktop\\test.txt");
+        File file = new File("/home/ahmed/Desktop/test.txt");
 
         BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -29,22 +29,44 @@ public class Sic {
         }
         int x;
         Adress.add(Var.get(0));
+        Adress.add(Var.get(0));
+
         for (int i = 0; i < Command.size(); i++) {
-            if (!"RESW".equals(Command.get(i)) || !"RESB".equals(Command.get(i))) {
+            if (!"RESW".equals(Command.get(i).toUpperCase())
+                    && !"RESB".equals(Command.get(i).toUpperCase())
+                    && !"BYTE".equals(Command.get(i).toUpperCase())) {
                 Adress.add(Integer.toHexString(3 + Integer.decode("0x" + (String) Adress.getLast())));
-            } else if ("RESW".equals(Command.get(i))) {
+            } else if ("RESW".equals(Command.get(i).toUpperCase())) {
                 x = 3 * Integer.parseInt(Var.get(i));
                 Adress.add(Integer.toHexString(x + Integer.decode("0x" + (String) Adress.getLast())));
 
-            } else {
+            } else if ("RESB".equals(Command.get(i).toUpperCase())) {
                 x = 1 * Integer.parseInt(Var.get(i));
                 Adress.add(Integer.toHexString(x + Integer.decode("0x" + (String) Adress.getLast())));
+            } else if ("BYTE".equals(Command.get(i).toUpperCase())) {
+                if (Command.get(i).startsWith("X")) {
+                    int y = Command.get(i).length() / 2;
+                    x = y * Integer.parseInt(Var.get(i));
+                    Adress.add(Integer.toHexString(x + Integer.decode("0x" + (String) Adress.getLast())));
 
+                }
             }
         }
 
-        for (int i = 0; i < Adress.size(); i++) {
-            System.out.println(Adress.get(i));
+        converter con = new converter();
+        converter.initialize();
+        String[][] opcode = new String[Command.size()][3];
+
+        for (int i = 1; i < Command.size(); i++) {
+            for (int j = 0; j<59; j++) {
+                if (Command.get(i).equals(con.find(j))) {
+                    opcode[i][0] = con.getopcode(j, 2);
+                }
+            }
+        }
+
+        for (int i = 0; i < 19; i++) {
+            System.out.println(Adress.get(i) + "        " + label.get(i) + "        " + Command.get(i) + "      " + Var.get(i) + "       " + opcode[i][0]);
         }
 
     }
