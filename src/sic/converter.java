@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sic;
 
-/**
- *
- * @author ahmed
- */
 public class converter {
 
     private static final String[][] OPTAB = new String[59][3];
@@ -78,11 +69,14 @@ public class converter {
     String getopcode(int x, int j) {
         return OPTAB[x][j];
     }
+
     String find(int j) {
-        return  OPTAB[j][0];
+        return OPTAB[j][0];
+
     }
 
     String gettype(int x, int j) {
+        System.out.println("find");
         return OPTAB[x][j];
     }
 }
